@@ -2918,8 +2918,9 @@ int dbg_debugfs_init_fs(struct ubifs_info *c)
 	struct dentry *dent;
 	struct ubifs_debug_info *d = c->dbg;
 
-	if (!IS_ENABLED(CONFIG_DEBUG_FS))
-		return 0;
+#if !defined(CONFIG_DEBUG_FS) && !defined(CONFIG_DEBUG_FS_MODULE)
+	return 0;
+#endif
 
 	n = snprintf(d->dfs_dir_name, UBIFS_DFS_DIR_LEN + 1, UBIFS_DFS_DIR_NAME,
 		     c->vi.ubi_num, c->vi.vol_id);
@@ -3013,8 +3014,9 @@ out:
  */
 void dbg_debugfs_exit_fs(struct ubifs_info *c)
 {
-	if (IS_ENABLED(CONFIG_DEBUG_FS))
-		debugfs_remove_recursive(c->dbg->dfs_dir);
+#if defined(CONFIG_DEBUG_FS) || defined(CONFIG_DEBUG_FS_MODULE)
+	debugfs_remove_recursive(c->dbg->dfs_dir);
+#endif
 }
 
 struct ubifs_global_debug_info ubifs_dbg;
@@ -3099,8 +3101,9 @@ int dbg_debugfs_init(void)
 	const char *fname;
 	struct dentry *dent;
 
-	if (!IS_ENABLED(CONFIG_DEBUG_FS))
-		return 0;
+#if !defined(CONFIG_DEBUG_FS) && !defined(CONFIG_DEBUG_FS_MODULE)
+	return 0;
+#endif
 
 	fname = "ubifs";
 	dent = debugfs_create_dir(fname, NULL);
@@ -3166,8 +3169,9 @@ out:
  */
 void dbg_debugfs_exit(void)
 {
-	if (IS_ENABLED(CONFIG_DEBUG_FS))
+#if defined(CONFIG_DEBUG_FS) || defined(CONFIG_DEBUG_FS_MODULE)
 		debugfs_remove_recursive(dfs_rootdir);
+#endif
 }
 
 /**
