@@ -140,9 +140,9 @@ static int vol_cdev_release(struct inode *inode, struct file *file)
 		vol->updating = 0;
 		vfree(vol->upd_buf);
 	} else if (vol->changing_leb) {
-		dbg_gen("only %lld of %lld bytes received for atomic LEB change"
-			" for volume %d:%d, cancel", vol->upd_received,
-			vol->upd_bytes, vol->ubi->ubi_num, vol->vol_id);
+		dbg_gen("only %lld of %lld bytes received for atomic LEB change for volume %d:%d, cancel",
+			vol->upd_received, vol->upd_bytes, vol->ubi->ubi_num,
+			vol->vol_id);
 		vol->changing_leb = 0;
 		vfree(vol->upd_buf);
 	}
